@@ -4,6 +4,7 @@ package at.ac.fhcampuswien.newsanalyzer.ui;
 import at.ac.fhcampuswien.newsanalyzer.ctrl.Controller;
 import at.ac.fhcampuswien.newsanalyzer.ctrl.NewsAPIException;
 import at.ac.fhcampuswien.newsanalyzer.downloader.Downloader;
+import at.ac.fhcampuswien.newsanalyzer.downloader.ParallelDownloader;
 import at.ac.fhcampuswien.newsanalyzer.downloader.SequentialDownloader;
 import at.ac.fhcampuswien.newsapi.NewsApi;
 import at.ac.fhcampuswien.newsapi.NewsApiBuilder;
@@ -53,7 +54,7 @@ public class UserInterface {
         menu.insert("z", "Sort by longest title", this::getSortArticlesByLongestTitle); // Exercise 3
         menu.insert("g", "Download URLs", () -> {
             try {
-                Downloader seq = new SequentialDownloader();
+                Downloader seq = new ParallelDownloader();
                 seq.process(ctrl.getArticles().stream().map(object -> Objects.toString(object.getUrl(), null))
                         .collect(Collectors.toList()));
             }catch (Exception e){
