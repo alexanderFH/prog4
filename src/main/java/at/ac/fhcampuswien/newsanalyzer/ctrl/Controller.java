@@ -50,6 +50,10 @@ public class Controller {
 		return articles.size();
 	}
 
+	public List<Article> getArticles() {
+		return articles;
+	}
+
 	public String getSortArticlesByLongestTitle() throws NewsAPIException {
 		if(articles == null)
 			throw new NewsAPIException("Load articles first");
