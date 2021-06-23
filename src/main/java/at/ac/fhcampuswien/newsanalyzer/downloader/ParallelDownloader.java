@@ -15,6 +15,7 @@ public class ParallelDownloader extends Downloader{
 
     @Override
     public int process(List<String> urls) {
+        long start = System.nanoTime();
         int count = 0;
         for (String url : urls) {
             try {
@@ -32,10 +33,11 @@ public class ParallelDownloader extends Downloader{
                 executorService.shutdownNow();
             }
         } catch (InterruptedException ex) {
+            System.err.println("Error while shutting down!" + ex);
             executorService.shutdownNow();
-            Thread.currentThread().interrupt();
         }
-
+        long end = System.nanoTime();
+        System.out.println("Time: "+ (end - start)/1000000 + " milliseconds");
         return count;
     }
 }

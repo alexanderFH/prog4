@@ -35,13 +35,13 @@ public abstract class Downloader {
                 os.write(b, 0, length);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error while saving" + e);
         } finally {
             try {
                 Objects.requireNonNull(is).close();
                 Objects.requireNonNull(os).close();
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println("There was an error: " + e);
             }
         }
         return fileName;

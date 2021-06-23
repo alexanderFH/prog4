@@ -52,21 +52,41 @@ public class UserInterface {
         menu.insert("x", "Shortest author name", this::getShortestNameOfAuthors);    // Exercise 3
         menu.insert("y", "Get article count", this::getArticleCount);    // Exercise 3
         menu.insert("z", "Sort by longest title", this::getSortArticlesByLongestTitle); // Exercise 3
-        menu.insert("g", "Download URLs", () -> {
-            try {
-                Downloader seq = new ParallelDownloader();
-                seq.process(ctrl.getArticles().stream().map(object -> Objects.toString(object.getUrl(), null))
-                        .collect(Collectors.toList()));
-            }catch (Exception e){
-                System.err.println(e);
-            }
-        });
+        menu.insert("g", "Download URLs", this::seqOrParallel);
         menu.insert("q", "Quit", null);
         Runnable choice;
         while ((choice = menu.exec()) != null) {
             choice.run();
         }
         System.out.println("Program finished");
+    }
+
+    public void seqOrParallel() {
+        Menu<Runnable> menu = new Menu<>("Sequential or Parallel Download?");
+        menu.insert("a", "Sequential", () -> {
+            try {
+                Downloader seq = new SequentialDownloader();
+                seq.process(ctrl.getArticles().stream().map(object -> Objects.toString(object.getUrl(), null))
+                        .collect(Collectors.toList()));
+            } catch (Exception e) {
+                System.err.println(e);
+            }
+        });
+        menu.insert("b", "Parallel", () -> {
+            try {
+                Downloader par = new ParallelDownloader();
+                par.process(ctrl.getArticles().stream().map(object -> Objects.toString(object.getUrl(), null))
+                        .collect(Collectors.toList()));
+            } catch (Exception e) {
+                System.err.println(e);
+            }
+        });
+        menu.insert("x", "Back to main menu", this::start);
+        Runnable choice;
+        while ((choice = menu.exec()) != null) {
+            choice.run();
+        }
+        start();
     }
 
 
